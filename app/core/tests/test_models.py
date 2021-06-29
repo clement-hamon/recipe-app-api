@@ -29,7 +29,7 @@ class UserTest(TestCase):
     def test_new_super_user(self):
         """ An operator can create a super user"""
         email = "test@hostdomain.com"
-        super_user: User = get_user_model().objects.create_super_user(email, "test123")
+        super_user: User = get_user_model().objects.create_superuser(email, "test123")
 
         self.assertTrue(super_user.is_superuser)
         self.assertTrue(super_user.is_staff)
