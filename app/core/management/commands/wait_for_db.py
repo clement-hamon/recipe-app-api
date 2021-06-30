@@ -13,7 +13,7 @@ class Command(BaseCommand):
             try:
                 conn = connections['default']
             except OperationalError:
-                time.sleep(1)
                 self.stdout.write("DB not available, waiting 1s...")
+                time.sleep(1)
 
         self.stdout.write(self.style.SUCCESS("DB connection successfull"))
