@@ -1,26 +1,26 @@
-version: "3.9"
 services:
     app:
-        build: .
+        build: 
+            context: .  # Build the Docker image from the current directory
+            args:
+                - DEV=true
         ports:
-            - "8000:8000"
+            - "8000:8000"  # Map host port 8000 to container port 8000
         command: >
-            sh -c "python manage.py wait_for_db && 
-                python manage.py migrate &&  
-                python manage.py runserver 0.0.0.0:8000"
+            sh -c "python manage.py runserver 0.0.0.0:8000"
         volumes:
-            - ./app:/app
-        depends_on: 
-            - db
-        environment: 
-            - DB_HOST=db
-            - DB_NAME=app
-            - DB_USER=postgres
-            - DB_PASS=randompassword123
+            - ./app:/app  # Mount the local 'app' directory to the '/app' directory in the container
+    #     depends_on: 
+    #         - db  # Ensure that the 'db' service is started before the 'app' service
+    #     environment: 
+    #         - DB_HOST=db  # Set the database host to 'db'
+    #         - DB_NAME=app  # Set the database name to 'app'
+    #         - DB_USER=postgres  # Set the database username to 'postgres'
+    #         - DB_PASS=randompassword123  # Set the database password to 'randompassword123'
 
-    db:
-        image: postgres:10-alpine
-        environment: 
-            - POSTGRES_DB=app
-            - POSTGRES_USER=postgres
-            - POSTGRES_PASSWORD=randompassword123
+    # db:
+    #     image: postgres:10-alpine  # Use the 'postgres:10-alpine' Docker image
+    #     environment: 
+    #         - POSTGRES_DB=app  # Set the database name to 'app'
+    #         - POSTGRES_USER=postgres  # Set the database username to 'postgres'
+    #         - POSTGRES_PASSWORD=randompassword123  # Set the database password to 'randompassword123'
