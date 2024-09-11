@@ -1,13 +1,19 @@
 ---
-name: checks
-on: [push]
+name: checks  # Name of the workflow
+on: [push]  # Trigger the workflow on push events
 jobs:
   test-lint:
-    name: Test and Lint
-    runs-on: ubuntu-20.04
+    name: Test and Lint  # Name of the job
+    runs-on: ubuntu-20.04  # Specify the operating system for the job
     steps:
-      - name: Login to Docker Hub
-        uses: docker/login-action@v1
+      - name: Login to Docker Hub  # Step to login to Docker Hub
+        uses: docker/login-action@v1  # Use the Docker login action
         with:
-          username: ${{ secrets.DOCKERHUB_USER }}
-          password: ${{ secrets.DOCKERHUB_TOKEN }}
+          username: ${{ secrets.DOCKERHUB_USER }}  # Provide the Docker Hub username from secrets
+          password: ${{ secrets.DOCKERHUB_TOKEN }}  # Provide the Docker Hub token from secrets
+      - name: Checkout  # Step to checkout the repository
+        uses: actions/checkout@v2  # Use the checkout action to fetch the repository
+      - name: Test
+        run: docker compose run --rm app sh -c "python manage.py test"
+      - name: Lint
+        run: docker compose run --rm app sh -c "flake8"
